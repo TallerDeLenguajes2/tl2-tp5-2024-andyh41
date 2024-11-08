@@ -1,0 +1,8 @@
+C:\tl2-tp5-2024-andyh41\obj\Debug\net8.0\tl2-tp5-2024-andyh41.csproj.AssemblyReference.cache
+C:\tl2-tp5-2024-andyh41\obj\Debug\net8.0\tl2-tp5-2024-andyh41.GeneratedMSBuildEditorConfig.editorconfig
+C:\tl2-tp5-2024-andyh41\obj\Debug\net8.0\tl2-tp5-2024-andyh41.AssemblyInfoInputs.cache
+C:\tl2-tp5-2024-andyh41\obj\Debug\net8.0\tl2-tp5-2024-andyh41.AssemblyInfo.cs
+C:\tl2-tp5-2024-andyh41\obj\Debug\net8.0\tl2-tp5-2024-andyh41.csproj.CoreCompileInputs.cache
+C:\tl2-tp5-2024-andyh41\obj\Debug\net8.0\tl2-tp5-2024-andyh41.MvcApplicationPartsAssemblyInfo.cs
+C:\tl2-tp5-2024-andyh41\obj\Debug\net8.0\tl2-tp5-2024-andyh41.MvcApplicationPartsAssemblyInfo.cache
+C:\tl2-tp5-2024-andyh41\obj\Debug\net8.0\tl2-tp5-2024-andyh41.sourcelink.json

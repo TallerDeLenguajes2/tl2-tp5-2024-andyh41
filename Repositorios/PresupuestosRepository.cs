@@ -11,6 +11,7 @@ namespace Repositorios;
 public class PresupuestosRepository()
 {
     private readonly string connectionString = "Data Source=Db/Tienda.db;Cache=Shared";
+     ProductosRepository repoProd = new ProductosRepository();
 
     public void CrearPresupuesto(Presupuestos pres)
     {
@@ -52,111 +53,135 @@ public class PresupuestosRepository()
         }
     }
 
-    public List<Presupuestos> ListarPresupuestos(){
+  
 
-        // crea la lista de presupuestos que se va a devolver
+    public List<Presupuestos> ListarPresupuestos()
+    {
         var presupuestos = new List<Presupuestos>();
 
-        // realiza una primera consulta, tomando el id y nombre para crear el objeto presupuesto
-        string queryString = "SELECT idPresupuesto, NombreDestinatario FROM Presupuestos;";
-
+        // Abre la conexión 
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
+
+            string queryString = @"
+                SELECT p.idPresupuesto, p.NombreDestinatario, pd.idProducto, pd.Cantidad 
+                FROM Presupuestos p
+                LEFT JOIN PresupuestosDetalles pd ON p.idPresupuesto = pd.idPresupuesto;
+            ";
+
             using (var command = new SqliteCommand(queryString, connection))
             {
-                using(var reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
                 {
+                    Presupuestos presupuesto = null;
+
                     while (reader.Read())
                     {
-                        // crea el objeto
-                        var presupuesto = new Presupuestos
-                        (
-                            reader.GetInt32(0), // Primer columna: Id
-                            reader.GetString(1) // Segunda columna: Nombre
-                        );
-
-                        // realiza una segunda consulta para el detalle del presupuesto
-                        string queryString2 = "SELECT idProducto, Cantidad FROM PresupuestosDetalle WHERE idPresupuesto = @id;";
-                        
-                        using (var command2 = new SqliteCommand(queryString2, connection))
+                        // Si es el primer registro de un nuevo presupuesto, crea una nueva instancia
+                        if (presupuesto == null || presupuesto.IdPresupuesto != reader.GetInt32(0))
                         {
-                            command2.Parameters.AddWithValue("@Id", presupuesto.IdPresupuesto);
-                            using(var reader2 = command2.ExecuteReader())
+                            // Si ya existe un presupuesto, lo añadimos a la lista
+                            if (presupuesto != null)
                             {
-                                while (reader2.Read())
-                                {
-                                    var detallar = new PresupuestoDetalle
-                                    (
-                                        DetallarProducto(reader2.GetInt32(1)), // crea un producto a partir del id de producto de la tabla para agregarlo al objeto detalle
-                                        reader2.GetInt32(2) // la cantidad del producto
-                                    );
-                                    // agrega el detalle a la lista de detalles del objeto
-                                    presupuesto.Detalle.Add(detallar);
-                                }
-                                
+                                presupuestos.Add(presupuesto);
                             }
+
+                            // Crear un nuevo presupuesto
+                            presupuesto = new Presupuestos
+                            {
+                                IdPresupuesto = reader.GetInt32(0),
+                                NombreDestinatario = reader.GetString(1),
+                                Detalle = new List<PresupuestoDetalle>()
+                            };
                         }
-                        // agrega el objeto a la lista que sera devuelta
+
+                        // Si el producto es válido, añadirlo al detalle del presupuesto
+                        if (!reader.IsDBNull(2)) // Si idProducto no es null
+                        {
+                            var detalle = new PresupuestoDetalle
+                            (
+                                repoProd.DetallarProducto(reader.GetInt32(2)), // Obtiene el producto por idProducto
+                                reader.GetInt32(3) // La cantidad del producto
+                            );
+
+                            // Agregar el detalle al presupuesto actual
+                            presupuesto.Detalle.Add(detalle);
+                        }
+                    }
+
+                    // Al final del ciclo, añade el último presupuesto (si existe)
+                    if (presupuesto != null)
+                    {
                         presupuestos.Add(presupuesto);
                     }
                 }
             }
         }
+
         return presupuestos;
     }
 
 
-    public Presupuestos ObtenerPresupuesto(int id){
-        // return (Presupuestos)ListarPresupuestos().Select(l=> l.IdPresupuesto=id); // metodo en una linea, que crea una lista y selecciona el objeto por el id
-        // metodo que no crea una lista, solo crea el objeto
-        // realiza una primera consulta para crear el objeto
-        string queryString = "SELECT idPresupuesto, NombreDestinatario FROM Presupuestos WHERE idPresupuesto = @Id;";
+
+
+    public Presupuestos ObtenerPresupuesto(int id)
+    {
+        string queryString = @"
+            SELECT p.idPresupuesto, p.NombreDestinatario, pd.idProducto, pd.Cantidad 
+            FROM Presupuestos p 
+            LEFT JOIN PresupuestosDetalles pd ON p.idPresupuesto = pd.idPresupuesto 
+            WHERE p.idPresupuesto = @id;
+        ";
 
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
             using (var command = new SqliteCommand(queryString, connection))
             {
-                command.Parameters.AddWithValue("@Id", id);
-                using(var reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        // crea el objeto
-                        var presupuesto = new Presupuestos
-                        (
-                            reader.GetInt32(0), // Primer columna: Id
-                            reader.GetString(1) // Segunda columna: Nombre
-                        );
+                // Corregir el nombre del parámetro para que sea consistente con la consulta
+                command.Parameters.AddWithValue("@id", id);
 
-                        // realiza una segunda consulta para el detalle del presupuesto
-                        string queryString2 = "SELECT idProducto, Cantidad FROM PresupuestosDetalle WHERE idPresupuesto = @id;";
-                        
-                        using (var command2 = new SqliteCommand(queryString2, connection))
+                using (var reader = command.ExecuteReader())
+                {
+                    Presupuestos presupuesto = null; // Inicializa la variable presupuesto
+
+                    // Lee los registros
+                    while (reader.Read())
+                    {
+                        // Si aún no hemos creado el objeto presupuesto, lo hacemos en el primer registro
+                        if (presupuesto == null)
                         {
-                            command2.Parameters.AddWithValue("@Id", id);
-                            using(var reader2 = command2.ExecuteReader())
+                            presupuesto = new Presupuestos
                             {
-                                while (reader2.Read())
-                                {
-                                    var detallar = new PresupuestoDetalle
-                                    (
-                                        DetallarProducto(reader2.GetInt32(1)), // crea un producto a partir del id de producto de la tabla para agregarlo al objeto detalle
-                                        reader2.GetInt32(2) // la cantidad del producto
-                                    );
-                                    // agrega el detalle a la lista de detalles del objeto
-                                    presupuesto.Detalle.Add(detallar);
-                                }   
-                            }
+                                IdPresupuesto = reader.GetInt32(0),  // Primer columna: IdPresupuesto
+                                NombreDestinatario = reader.GetString(1) // Segunda columna: NombreDestinatario
+                            };
                         }
-                        return presupuesto;
+
+                        // Verifica si el idProducto es nulo (es decir, si hay detalles de presupuesto)
+                        if (!reader.IsDBNull(2)) // Si idProducto no es null
+                        {
+                            var detallar = new PresupuestoDetalle
+                            (
+                                repoProd.DetallarProducto(reader.GetInt32(2)), // Obtiene el producto a partir de idProducto
+                                reader.GetInt32(3) // La cantidad del producto
+                            );
+                            // Agrega el detalle al presupuesto
+                            presupuesto.Detalle.Add(detallar);
+                        }
                     }
+
+                    // Devuelve el presupuesto si existe, de lo contrario, devuelve null
+                    return presupuesto;
                 }
             }
         }
+
+        // Si no se encuentra el presupuesto, devuelve null
         return null;
     }
+
 
 
     public void AgregarDetalle(int id, int idProd, int cant){

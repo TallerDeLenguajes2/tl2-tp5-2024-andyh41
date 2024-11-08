@@ -10,6 +10,7 @@ namespace Repositorios;
 public class ProductosRepository()
 {
     private readonly string connectionString = "Data Source=Db/Tienda.db;Cache=Shared";
+    
     public void CrearProducto(Productos producto)
     {
         string queryString = "INSERT INTO Productos (Descripcion, Precio) VALUES (@Descripcion, @Precio);";

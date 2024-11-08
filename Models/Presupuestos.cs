@@ -17,6 +17,7 @@ public class Presupuestos
         IdPresupuesto = idPresupuesto;
         this.NombreDestinatario = nombreDestinatario;
     }
+    public Presupuestos(){}
 
     public int IdPresupuesto { get => idPresupuesto; set => idPresupuesto = value; }
     public string NombreDestinatario { get => nombreDestinatario; set => nombreDestinatario = value; }

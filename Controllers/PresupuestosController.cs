@@ -32,9 +32,10 @@ public class PresupuestosController : ControllerBase
         return CreatedAtAction(nameof(ObtenerPresupuesto), new { id = presupuesto.IdPresupuesto }, presupuesto);
     }
 
+
     // POST api/Presupuesto/{id}/ProductoDetalle
     [HttpPost("{id}/ProductoDetalle")]
-    public IActionResult AgregarProductoDetalle(int id, [FromBody] PresupuestoDetalle detalle)
+    public IActionResult AgregarDetalle(int id, [FromBody] PresupuestoDetalle detalle)
     {
         if (detalle == null || detalle.Producto == null)
         {
@@ -44,6 +45,7 @@ public class PresupuestosController : ControllerBase
         _presupuestosRepository.AgregarDetalle(id, detalle.Producto.IdProducto, detalle.Cantidad);
         return NoContent();
     }
+    
 
     // GET api/presupuesto
     [HttpGet]
