@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
+using System.Collections.Generic;
 
 namespace Models;
 public class Productos
@@ -21,4 +23,6 @@ public class Productos
     public int IdProducto { get => idProducto; set => idProducto = value; }
     public string Descripcion { get => descripcion; set => descripcion = value; }
     public int Precio { get => precio; set => precio = value; }
+
+
 }

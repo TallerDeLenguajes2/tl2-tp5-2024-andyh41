@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using Models;
 using Repositorios;
+using System.Text.Json.Serialization;
+using System.Collections.Generic;
+
 
 namespace Controllers;
 
@@ -19,7 +22,6 @@ public class PresupuestosController : ControllerBase
         _presupuestosRepository = new PresupuestosRepository();
     }
 
-    // POST api/Presupuesto
     [HttpPost]
     public IActionResult CrearPresupuesto([FromBody] Presupuestos presupuesto)
     {
@@ -28,13 +30,19 @@ public class PresupuestosController : ControllerBase
             return BadRequest("El presupuesto es nulo.");
         }
         
+        // Inicializar la lista `Detalle` como vacía si está en null
+        if (presupuesto.Detalle == null)
+        {
+            presupuesto.Detalle = new List<PresupuestoDetalle>();
+        }
+
         _presupuestosRepository.CrearPresupuesto(presupuesto);
         return CreatedAtAction(nameof(ObtenerPresupuesto), new { id = presupuesto.IdPresupuesto }, presupuesto);
     }
 
 
     // POST api/Presupuesto/{id}/ProductoDetalle
-    [HttpPost("{id}/ProductoDetalle")]
+    [HttpPost("{id}/ProductoDetalle")] // corregir
     public IActionResult AgregarDetalle(int id, [FromBody] PresupuestoDetalle detalle)
     {
         if (detalle == null || detalle.Producto == null)
@@ -42,7 +50,7 @@ public class PresupuestosController : ControllerBase
             return BadRequest("El detalle del producto es nulo.");
         }
 
-        _presupuestosRepository.AgregarDetalle(id, detalle.Producto.IdProducto, detalle.Cantidad);
+        _presupuestosRepository.AgregarDetalle(id, detalle);
         return NoContent();
     }
     

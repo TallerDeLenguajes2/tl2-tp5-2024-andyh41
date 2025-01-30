@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Data.Sqlite;
 using Models;
+using System.Text.Json.Serialization;
+using System.Collections.Generic;
+
 
 namespace Repositorios; 
 public class ProductosRepository()

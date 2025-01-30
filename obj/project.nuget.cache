@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Vj/S++0yOjPHPjVTMOyPFv7k5Fe6M8oNbIQ5VZ1+XQnYDeQFA3DM8MbYjcwbIjDI3M2xDTYeOSLoakpihNxGgQ==",
+  "dgSpecHash": "FYJHXLLd5CGjE18TOGL5H4BKYTNXmcSZn9EYPSzcb3qArCQTnBp+hhuM+dQS3T7htSTxaId6OFF5cEmsznZ6Yg==",
   "success": true,
-  "projectFilePath": "c:\\tl2-tp5-2024-andyh41\\tl2-tp5-2024-andyh41.csproj",
+  "projectFilePath": "C:\\tl2-tp5-2024-andyh41\\tl2-tp5-2024-andyh41.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\clona\\.nuget\\packages\\microsoft.data.sqlite\\8.0.10\\microsoft.data.sqlite.8.0.10.nupkg.sha512",
     "C:\\Users\\clona\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.10\\microsoft.data.sqlite.core.8.0.10.nupkg.sha512",

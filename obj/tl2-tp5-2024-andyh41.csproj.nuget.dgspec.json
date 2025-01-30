@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\tl2-tp5-2024-andyh41\\tl2-tp5-2024-andyh41.csproj": {}
+    "C:\\tl2-tp5-2024-andyh41\\tl2-tp5-2024-andyh41.csproj": {}
   },
   "projects": {
-    "c:\\tl2-tp5-2024-andyh41\\tl2-tp5-2024-andyh41.csproj": {
+    "C:\\tl2-tp5-2024-andyh41\\tl2-tp5-2024-andyh41.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\tl2-tp5-2024-andyh41\\tl2-tp5-2024-andyh41.csproj",
+        "projectUniqueName": "C:\\tl2-tp5-2024-andyh41\\tl2-tp5-2024-andyh41.csproj",
         "projectName": "tl2-tp5-2024-andyh41",
-        "projectPath": "c:\\tl2-tp5-2024-andyh41\\tl2-tp5-2024-andyh41.csproj",
+        "projectPath": "C:\\tl2-tp5-2024-andyh41\\tl2-tp5-2024-andyh41.csproj",
         "packagesPath": "C:\\Users\\clona\\.nuget\\packages\\",
-        "outputPath": "c:\\tl2-tp5-2024-andyh41\\obj\\",
+        "outputPath": "C:\\tl2-tp5-2024-andyh41\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\clona\\AppData\\Roaming\\NuGet\\NuGet.Config"
